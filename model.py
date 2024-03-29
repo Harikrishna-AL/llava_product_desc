@@ -24,6 +24,7 @@ from PIL import Image
 from io import BytesIO
 import re
 
+
 def image_parser(args):
     out = args.image_file.split(args.sep)
     return out
@@ -47,15 +48,16 @@ def load_images(image_files):
         out.append(image)
     return out
 
+model_path = "liuhaotian/llava-v1.6-mistral-7b"
+
+model_name = get_model_name_from_path(model_path)
+tokenizer, model, image_processor, context_len = load_pretrained_model(
+    model_path, None, get_model_name_from_path(model_path)
+)
 
 def eval_model(args, images):
     # Model
     disable_torch_init()
-
-    model_name = get_model_name_from_path(args.model_path)
-    tokenizer, model, image_processor, context_len = load_pretrained_model(
-        args.model_path, args.model_base, model_name
-    )
 
     qs = args.query
     # if with_image:
@@ -136,7 +138,7 @@ def eval_model(args, images):
     return outputs
 
 
-model_path = "liuhaotian/llava-v1.6-mistral-7b"
+
 
 def get_description(images):
     prompt = """Describe the product in the image in detail in a writing stype optimium for advertisements.
