@@ -13,9 +13,9 @@ async def get_desc(image: UploadFile = File(...), prompt: str = None, conv : obj
     image_bytes = await image.read()
     image = Image.open(io.BytesIO(image_bytes))
   
-    description = get_description([image], prompt=prompt, conv=conv)
+    description, conv_hist = get_description([image], prompt=prompt, conv=conv)
     
-    return {"description": description, "conv": conv}
+    return {"description": description, "conv": conv_hist}
 
 @app.post("/rewrite_desc")
 async def rewrite_desc(additional: str, output: str,image: UploadFile = File(...)):
