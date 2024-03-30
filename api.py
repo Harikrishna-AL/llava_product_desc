@@ -1,21 +1,24 @@
-from fastapi import FastAPI, File, UploadFile
-from typing import List
+from fastapi import FastAPI, File, UploadFile, Form
+from typing import List, Optional
 from PIL import Image
 import requests
 from translate import translate
 from model import get_description, rewrite_description
 import io
+import json
 
 app = FastAPI()
 
 @app.post("/get_desc")
-async def get_desc(image: UploadFile = File(...), prompt: str = None, conv : object = None):
+async def get_desc(image: UploadFile = File(...), prompt: str = None, conv: Optional[str] = Form(None)):
+    if conv:
+        conv = json.loads(conv)
     image_bytes = await image.read()
     image = Image.open(io.BytesIO(image_bytes))
   
     description, conv_hist = get_description([image], prompt=prompt, conv=conv)
     
-    return {"description": description, "conv": conv_hist}
+    return {"description": description, "conv": json.dumps(conv_hist)}
 
 @app.post("/rewrite_desc")
 async def rewrite_desc(additional: str, output: str,image: UploadFile = File(...)):
