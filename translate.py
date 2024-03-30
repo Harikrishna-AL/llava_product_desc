@@ -5,7 +5,7 @@ import torch
 
 def translate(description, lang):
     model = AutoModelForCausalLM.from_pretrained(
-    "Telugu-LLM-Labs/Indic-gemma-7b-finetuned-sft-Navarasa-2.0",
+    "Telugu-LLM-Labs/Indic-gemma-2b-finetuned-sft-Navarasa-2.0",
     load_in_4bit = False,
     # token = hf_token
     )
