@@ -70,7 +70,7 @@ def eval_model(args, images):
             qs = re.sub(IMAGE_PLACEHOLDER, image_token_se, qs)
         else:
             qs = re.sub(IMAGE_PLACEHOLDER, DEFAULT_IMAGE_TOKEN, qs)
-    else:
+    elif IMAGE_PLACEHOLDER not in qs and prompt is None:
         if model.config.mm_use_im_start_end:
             qs = image_token_se + "\n" + qs
         else:
