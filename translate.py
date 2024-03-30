@@ -30,7 +30,7 @@ def translate(description, lang):
     
     inputs = tokenizer([input_text], return_tensors = "pt").to("cuda")
     
-    outputs = model.generate(**inputs, max_new_tokens = 1000, use_cache = True)
+    outputs = model.generate(**inputs, max_new_tokens = 2000, use_cache = True)
     response = tokenizer.batch_decode(outputs)[0]
     print(response)
     # start_index = input_text.find("### Response:") + len("### Response:")
