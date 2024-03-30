@@ -56,7 +56,7 @@ tokenizer, model, image_processor, context_len = load_pretrained_model(
 )
 conv = conv_templates["mistral_instruct"].copy()
 
-def eval_model(args, images):
+def eval_model(args, images, chat_mode=False):
     # Model
     disable_torch_init()
 
@@ -70,7 +70,7 @@ def eval_model(args, images):
             qs = re.sub(IMAGE_PLACEHOLDER, image_token_se, qs)
         else:
             qs = re.sub(IMAGE_PLACEHOLDER, DEFAULT_IMAGE_TOKEN, qs)
-    elif IMAGE_PLACEHOLDER not in qs and prompt is None:
+    elif IMAGE_PLACEHOLDER not in qs and chat_mode == False:
         if model.config.mm_use_im_start_end:
             qs = image_token_se + "\n" + qs
         else:
@@ -168,8 +168,10 @@ def get_description(images, prompt=None):
         "num_beams": 1,
         "max_new_tokens": 512
     })()
-    
-    out = eval_model(args, images)
+    if prompt is None:
+        out = eval_model(args, images)
+    else:
+        out = eval_model(args, images, chat_mode=True)
     return out
 
 
