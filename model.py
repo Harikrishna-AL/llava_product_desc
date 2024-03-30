@@ -103,7 +103,7 @@ def eval_model(args, images, chat_mode=False):
     conv.append_message(conv.roles[0], qs)
     conv.append_message(conv.roles[1], None)
     prompt = conv.get_prompt()
-    
+    # fix this lol
     # if with_image:
     # image_files = image_parser(args)
     # images = load_images(image_files)
