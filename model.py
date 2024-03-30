@@ -120,15 +120,15 @@ def eval_model(args, images, chat_mode=False):
         model.config
     ).to(model.device, dtype=torch.float16)
     # print(model.config)
-    if chat_mode:
-        input_ids = tokenizer_image_token(prompt, tokenizer, None, return_tensors="pt").unsqueeze(0).cuda()
+    # if chat_mode:
+    #     input_ids = tokenizer_image_token(prompt, tokenizer, None, return_tensors="pt").unsqueeze(0).cuda()
     
-    else:
-        input_ids = (
-            tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
-            .unsqueeze(0)
-            .cuda()
-        )
+    # else:
+    input_ids = (
+        tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
+        .unsqueeze(0)
+        .cuda()
+    )
 
     with torch.inference_mode():
         output_ids = model.generate(
