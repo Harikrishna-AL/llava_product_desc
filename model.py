@@ -54,7 +54,7 @@ model_name = get_model_name_from_path(model_path)
 tokenizer, model, image_processor, context_len = load_pretrained_model(
     model_path, None, get_model_name_from_path(model_path)
 )
-conv = conv_templates[args.conv_mode].copy()
+conv = conv_templates["mistral_instruct"].copy()
 
 def eval_model(args, images):
     # Model
