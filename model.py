@@ -153,6 +153,7 @@ def eval_model(args, images, chat_mode=False):
 
 
 def get_description(images, prompt=None):
+    chat_mode = False
     if prompt is None:
         prompt = """Describe the product in the image in detail in a writing stype optimium for advertisements.
         
@@ -160,6 +161,7 @@ def get_description(images, prompt=None):
         """
     else:
         prompt = prompt
+        chat_mode = True
     # image_file = "https://llava-vl.github.io/static/images/view.jpg"
     # image_file="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D"
     image_file="https://in.canon/media/image/2021/09/25/30be26306419482888690cac6adb9de6_product_category_eosr3.png"
@@ -177,9 +179,9 @@ def get_description(images, prompt=None):
         "num_beams": 1,
         "max_new_tokens": 512
     })()
-    if prompt is None:
+    if not chat_mode:
         out = eval_model(args, images)
-    else:
+    if chat_mode:
         out = eval_model(args, images, chat_mode=True)
     return out
 
