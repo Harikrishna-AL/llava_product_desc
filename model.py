@@ -55,6 +55,7 @@ tokenizer, model, image_processor, context_len = load_pretrained_model(
     model_path, None, get_model_name_from_path(model_path)
 )
 conv = conv_templates["mistral_instruct"].copy()
+conv.separator_style = SeparatorStyle.LLAMA_2
 
 def eval_model(args, images, chat_mode=False):
     # Model
