@@ -106,10 +106,10 @@ def eval_model(args, images, conv=None, chat_mode=False):
     if not chat_mode:
         conv_new = conv_templates["mistral_instruct"].copy()
         conv_new.separator_style = SeparatorStyle.LLAMA_2
-        conv_new.append_message(conv.roles[0], qs)
+        conv_new.append_message(conv_new.roles[0], qs)
     else:
         conv_new = conv
-        conv_new.append_message(conv.roles[0], qs)
+        conv_new.append_message(conv_new.roles[0], qs)
     # conv.append_message(conv.roles[1], None)
     prompt = conv_new.get_prompt()
     # fix this lol
