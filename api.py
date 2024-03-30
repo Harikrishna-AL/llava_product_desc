@@ -9,11 +9,11 @@ import io
 app = FastAPI()
 
 @app.post("/get_desc")
-async def get_desc(image: UploadFile = File(...), prompt: str = None):
+async def get_desc(image: UploadFile = File(...), prompt: str = None, conv : object = None):
     image_bytes = await image.read()
     image = Image.open(io.BytesIO(image_bytes))
   
-    description = get_description([image], prompt=prompt)
+    description = get_description([image], prompt=prompt, conv=conv)
     
     return {"description": description}
 

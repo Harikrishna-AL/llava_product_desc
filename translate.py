@@ -11,7 +11,7 @@ def translate(description, lang):
     )
     model.to("cuda")
     
-    tokenizer = AutoTokenizer.from_pretrained("Telugu-LLM-Labs/Indic-gemma-7b-finetuned-sft-Navarasa-2.0")
+    tokenizer = AutoTokenizer.from_pretrained("Telugu-LLM-Labs/Indic-gemma-2b-finetuned-sft-Navarasa-2.0")
     input_prompt = """
     ### Instruction:
     {}

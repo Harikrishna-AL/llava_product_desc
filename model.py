@@ -54,10 +54,9 @@ model_name = get_model_name_from_path(model_path)
 tokenizer, model, image_processor, context_len = load_pretrained_model(
     model_path, None, get_model_name_from_path(model_path)
 )
-conv = conv_templates["mistral_instruct"].copy()
-conv.separator_style = SeparatorStyle.LLAMA_2
 
-def eval_model(args, images, chat_mode=False):
+
+def eval_model(args, images, conv=None, chat_mode=False):
     # Model
     disable_torch_init()
 
@@ -104,11 +103,15 @@ def eval_model(args, images, chat_mode=False):
         )
     else:
         args.conv_mode = conv_mode
-
-    
-    conv.append_message(conv.roles[0], qs)
+    if not chat_mode:
+        conv_new = conv_templates["mistral_instruct"].copy()
+        conv_new.separator_style = SeparatorStyle.LLAMA_2
+        conv_new.append_message(conv.roles[0], qs)
+    else:
+        conv_new = conv
+        conv_new.append_message(conv.roles[0], qs)
     # conv.append_message(conv.roles[1], None)
-    prompt = conv.get_prompt()
+    prompt = conv_new.get_prompt()
     # fix this lol
     # if with_image:
     # image_files = image_parser(args)
@@ -146,14 +149,14 @@ def eval_model(args, images, chat_mode=False):
 
     outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0].strip()
     # print(outputs)
-    conv.append_message(conv.roles[1], outputs)
-    print(conv.get_prompt())
-    return outputs
+    conv_new.append_message(conv_new.roles[1], outputs)
+    print(conv_new.get_prompt())
+    return outputs, conv_new
 
 
 
 
-def get_description(images, prompt=None):
+def get_description(images, prompt=None, conv=None):
     chat_mode = False
     if prompt is None:
         prompt = """Describe the product in the image in detail in a writing stype optimium for advertisements.
@@ -183,7 +186,7 @@ def get_description(images, prompt=None):
     if not chat_mode:
         out = eval_model(args, images)
     if chat_mode:
-        out = eval_model(args, images, chat_mode=True)
+        out = eval_model(args, images, chat_mode=True, conv=conv)
     return out
 
 
