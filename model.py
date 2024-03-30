@@ -54,6 +54,7 @@ model_name = get_model_name_from_path(model_path)
 tokenizer, model, image_processor, context_len = load_pretrained_model(
     model_path, None, get_model_name_from_path(model_path)
 )
+conv = conv_templates[args.conv_mode].copy()
 
 def eval_model(args, images):
     # Model
@@ -98,16 +99,16 @@ def eval_model(args, images):
     else:
         args.conv_mode = conv_mode
 
-    conv = conv_templates[args.conv_mode].copy()
+    
     conv.append_message(conv.roles[0], qs)
     conv.append_message(conv.roles[1], None)
     prompt = conv.get_prompt()
-
+    
     # if with_image:
     # image_files = image_parser(args)
     # images = load_images(image_files)
     image_sizes = [x.size for x in images]
-    print(image_sizes)
+    # print(image_sizes)
     images_tensor = process_images(
         images,
         image_processor,
@@ -134,7 +135,9 @@ def eval_model(args, images):
         )
 
     outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0].strip()
-    print(outputs)
+    # print(outputs)
+    conv.append_message(conv.roles[1], outputs)
+    print(conv.get_prompt())
     return outputs
 
 
@@ -154,7 +157,7 @@ def get_description(images):
         "model_base": None,
         "model_name": get_model_name_from_path(model_path),
         "query": prompt,
-        "conv_mode": None,
+        "conv_mode": "mistral_instruct",
         "image_file": image_file,
         "sep": ",",
         "temperature": 0,
@@ -178,7 +181,7 @@ def rewrite_description(images,additional_prompt,out):
         "model_base": None,
         "model_name": get_model_name_from_path(model_path),
         "query": new_prompt,
-        "conv_mode": None,
+        "conv_mode": "mistral_instruct",
         "image_file": image_file,
         "sep": ",",
         "temperature": 0,
