@@ -33,10 +33,11 @@ def translate(description, lang):
     outputs = model.generate(**inputs, max_new_tokens = 1000, use_cache = True)
     response = tokenizer.batch_decode(outputs)[0]
     print(response)
-    start_index = input_text.find("### Response:") + len("### Response:")
-    end_index = input_text.find("<eos>", start_index)
-    output_content = input_text[start_index:-1].strip()
-    print(output_content.strip())
-    return output_content.strip()
+    # start_index = input_text.find("### Response:") + len("### Response:")
+    # end_index = input_text.find("<eos>", start_index)
+    # output_content = input_text[start_index:-1].strip()
+    outputs = response.split("###")
+    print(outputs[-1])
+    return outputs[-1]
    # print(response)
    # return response
