@@ -70,16 +70,16 @@ def eval_model(args, images, chat_mode=False):
             qs = re.sub(IMAGE_PLACEHOLDER, image_token_se, qs)
         else:
             qs = re.sub(IMAGE_PLACEHOLDER, DEFAULT_IMAGE_TOKEN, qs)
-    # elif IMAGE_PLACEHOLDER not in qs and chat_mode == False:
-    #     if model.config.mm_use_im_start_end:
-    #         qs = image_token_se + "\n" + qs
-    #     else:
-    #         qs = DEFAULT_IMAGE_TOKEN + "\n" + qs
-    else:
+    elif IMAGE_PLACEHOLDER not in qs and chat_mode == False:
         if model.config.mm_use_im_start_end:
             qs = image_token_se + "\n" + qs
         else:
             qs = DEFAULT_IMAGE_TOKEN + "\n" + qs
+    # else:
+    #     if model.config.mm_use_im_start_end:
+    #         qs = image_token_se + "\n" + qs
+    #     else:
+    #         qs = DEFAULT_IMAGE_TOKEN + "\n" + qs
 
 
     if "llama-2" in model_name.lower():
